@@ -3,6 +3,10 @@ uuid = "89f20485-8a02-53af-9e9b-c46095587f69"
 authors = ["Lyndon White <lyndon.white@invenialabs.co.uk>"]
 version = "0.1.0"
 
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
