@@ -6,9 +6,10 @@ function addproc_elastic!(em::ElasticityManager)
         
         # setup the worker
         for code in em.worker_setups
-            remotecall_fetch(proc_id) do  # use the blocking version as am already async
-                eval(code)
-            end
+            # use the blocking version as am already async
+            # and we don't want the worker added to the pool
+            # til this is ready
+            remotecall_wait(Core.eval, proc_id, Main, code)
         end
 
         # make the worker available to the cluster_manager

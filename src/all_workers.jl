@@ -15,9 +15,7 @@ macro all_workers(elasticity_manager, expr)
 
         # run it on current workers now
         for worker in workers(em.pool)
-            remotecall_fetch(worker) do
-                eval(q_expr)
-            end
+            remotecall_wait(Core.eval, worker, Main, q_expr)
         end
     end
 end

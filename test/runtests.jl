@@ -8,17 +8,26 @@ using Distributed
     addproc_elastic!(em)
     sleep(2)
     @test length(workers(em)) == 1
-    @show workers(em)
 
     @all_workers em begin
-    #    using Distributed
+        using Distributed
         global x = 2myid()
-        @show x
     end
-
+    
     for worker_id in workers(em)
         @test 2*worker_id == remotecall_fetch(worker_id) do
-            eval(:x)
+            x
         end
     end
+    
+    addproc_elastic!(em)
+    sleep(2)
+    @test length(workers(em)) == 2
+    
+    for worker_id in workers(em)
+        @test 2*worker_id == remotecall_fetch(worker_id) do
+            x
+        end
+    end
+
 end
