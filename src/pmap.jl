@@ -1,7 +1,6 @@
-
 function Distributed.pmap(f, em::ElasticityManager, data; nchunks=25)
-    # Work mush be pushed to each worker
-    # We can not use a workers pull model (e.g with channels)
+    # Work must be pushed to each worker
+    # We cannot use a workers pull model (e.g with `Channels`)
     # because we need to track who was doing what work,
     # incase the worker dies and we need to reassign it.
 
