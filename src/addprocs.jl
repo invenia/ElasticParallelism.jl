@@ -1,5 +1,4 @@
-
-function addproc_elastic(em::ElasticityManager)
+function addproc_elastic!(em::ElasticityManager)
     @async begin
         # Add the worker
         proc_id::Integer = first(addprocs(1))
@@ -18,20 +17,15 @@ function addproc_elastic(em::ElasticityManager)
 end
 
 
-
-function Distributed.addprocs(em::ElasticityManager, nprocs)
-    return addprocs_elastic(em::ElasticityManager, nprocs)
-end
-
-function addprocs_elastic(nprocs::Integer)
+function addprocs_elastic!(nprocs::Integer)
     addprocs_elastic(GLOBAL_ELASTICITY_MANAGER[], nprocs)
 end
 
 
 
-function addprocs_elastic(em::ElasticityManager, nprocs)
+function addprocs_elastic!(em::ElasticityManager, nprocs)
     for ii in 1:nprocs
-        @async addproc_elastic(em)
+        @async addproc_elastic!(em)
     end
 end
 

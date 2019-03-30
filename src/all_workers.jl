@@ -9,20 +9,19 @@ run as they come on-line.
 macro all_workers(elasticity_manager, expr)
     quote
         em = $(esc(elasticity_manager))
+        q_expr = $(Expr(:quote, expr))
         # Save it for future workers
-        push!(em.worker_setups, $(esc(expr)))
+        push!(em.worker_setups, q_expr)
 
         # run it on current workers now
         for worker in workers(em.pool)
-            remotecall(worker) do
-                eval($(esc(expr)))
+            remotecall_fetch(worker) do
+                eval(q_expr)
             end
         end
     end
 end
 
-#== TODO: Work this one out
 macro all_workers(expr)
-    return esc(:($(@all_workers)($(GLOBAL_ELASTICITY_MANAGER[]), $expr)))
+    return esc(:(@all_workers($(GLOBAL_ELASTICITY_MANAGER[]), $expr)))
 end
-==#
